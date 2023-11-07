@@ -1,0 +1,95 @@
+﻿@page "/"
+@namespace BlazorStarField.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <base href="~/" />
+    <title>블레이저타이틀</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, user-scalable=no" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="css/nucleo-icons.css" rel="stylesheet" />
+    <link href="css/nucleo-svg.css" rel="stylesheet" />
+    <link href="css/site.css" rel="stylesheet" />
+</head>
+<body class="g-sidenav-show bg-gray-100">
+    @{
+        var isIEOrEdgeLegacy = Request.Headers["User-Agent"]
+        .Any(userAgent => userAgent.Contains("MSIE") || userAgent.Contains("Trident") || userAgent.Contains("Edge/"));
+    }
+    @if (isIEOrEdgeLegacy)
+    {
+        <component type="typeof(BlazorStarField.Shared.BrowserNotSupported)" render-mode="Static" />
+    }
+    else
+    {
+        <main>
+            <component type="typeof(App)" render-mode="ServerPrerendered" />
+        </main>
+
+        <div id="blazor-error-ui">
+            <environment include="Staging,Production">
+                오류가 발생했습니다. 이 응용 프로그램은 다시 로드할 때까지 더 이상 응답하지 않을 수 있습니다.
+            </environment>
+            <environment include="Development">
+                처리되지 않은 예외가 발생했습니다. 자세한 내용은 브라우저 개발 도구를 참조하세요.
+            </environment>
+            <a href="" class="reload">새로고침</a>
+            <a class="dismiss">X</a>
+        </div>
+
+        <script src="_framework/blazor.server.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.2/web-animations-next.min.js"></script> //Groupeffect
+    }
+    <script>
+
+        function firstsetbar(){
+            let barContainer = document.querySelector('.bar-container');
+            let bars = [];
+            let bar;
+            for (let i = 0; i < 30; i++) {
+                bar = document.createElement('div');
+                bar.classList.add('bar');
+                barContainer.append(bar);
+                bars.push(bar);
+            }
+
+            let keyframes = [
+                { transform: 'scaleY(0)' },
+                { transform: 'scaleY(1)' }
+            ];
+
+            let options = {
+                duration: 500,
+                //iterations: Infinity,
+                direction: 'alternate',
+                fill: 'both',
+                easing: 'ease-in-out'
+            };
+
+            let effects = [];
+            bars.forEach((bar, index) => {
+                let effect = new KeyframeEffect(bar, keyframes, options);
+                effects.push(effect);
+            });
+
+            //그룹 이펙트
+            //let groupEffect = new GroupEffect(effects);
+            //let animation = document.timeline.play(groupEffect);
+
+            //시퀀스 이펙트 -> 순차적이기 때문에 infinity 속성이 있으면 안됨
+            let sequenceEffect = new SequenceEffect(effects);
+            let animation = document.timeline.play(sequenceEffect);
+
+            //bars.forEach((bar, index) => {
+            //    bar.animate(keyframes, { ...options, delay: index * 200 });
+            //});
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+﻿@page "/"
+@inherits Page
+
+@*<div class="bar-container"></div>*@
+
+<div class="starfield">
+</div>
+@code{
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            
+        }
+        catch
+        {
+
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if(firstRender)
+            {
+                module = await JS.InvokeAsync<IJSObjectReference>("import", "./js/Star.js");
+                await module.InvokeVoidAsync("firstsetstar");
+                //await JS.InvokeVoidAsync("firstsetbar");
+            }
+        }
+        catch
+        {
+
+        }
+    }
+}

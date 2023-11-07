@@ -1,0 +1,36 @@
+﻿
+
+@code {
+
+    public DotNetObjectReference<Page> reference;
+    public IJSObjectReference module;
+    [Inject] public NavigationManager navigationManager { get; set; }
+    [Inject] protected IJSRuntime JS { get; set; }
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            reference = DotNetObjectReference.Create(this);
+        }
+        catch
+        {
+
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (firstRender)
+            {
+
+            }
+        }
+        catch
+        {
+
+        }
+    }
+}
